@@ -12,7 +12,7 @@ export default function RepositoryList({
   const [editingName, setEditingName] = useState(null)
   const [editingNameValue, setEditingNameValue] = useState('')
 
-  // 创建新仓库
+  // 创建新词库
   const handleCreateRepo = () => {
     if (!newRepoName.trim()) return
     const newRepo = window.services.repository.createRepository(newRepoName)
@@ -46,13 +46,13 @@ export default function RepositoryList({
   return (
     <div className="repo-list">
       <div className="repo-list-header">
-        <h2>仓库列表</h2>
+        <h2>词库列表</h2>
         <button 
           className="btn btn-primary new-repo-btn"
           onClick={() => setShowNewRepo(true)}
         >
           <span>+</span>
-          新建仓库
+          新建词库
         </button>
       </div>
 
@@ -62,7 +62,7 @@ export default function RepositoryList({
             type="text"
             value={newRepoName}
             onChange={e => setNewRepoName(e.target.value)}
-            placeholder="输入仓库名称"
+            placeholder="输入词库名称"
             autoFocus
           />
           <button 

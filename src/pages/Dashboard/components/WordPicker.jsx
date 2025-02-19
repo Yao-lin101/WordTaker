@@ -38,13 +38,13 @@ export default function WordPicker({ repositories, onUpdate }) {
     newRepos.splice(sourceIndex, 1)
     newRepos.splice(targetIndex, 0, draggedRepo)
 
-    // 为每个仓库更新 order 属性
+    // 为每个词库更新 order 属性
     const updatedRepos = newRepos.map((repo, index) => ({
       ...repo,
       order: index
     }))
 
-    // 逐个更新仓库的顺序
+    // 逐个更新词库的顺序
     let success = true
     for (const repo of updatedRepos) {
       if (!window.services.repository.updateRepository(repo.id, { order: repo.order })) {
@@ -88,7 +88,7 @@ export default function WordPicker({ repositories, onUpdate }) {
           words: updatedRepo.words,
           recycled: updatedRepo.recycled
         })) {
-          // 更新父组件的仓库数据
+          // 更新父组件的词库数据
           onUpdate(repositories.map(r => 
             r.id === repo.id ? updatedRepo : r
           ))
@@ -116,7 +116,7 @@ export default function WordPicker({ repositories, onUpdate }) {
               {repo.cover ? (
                 <img 
                   src={repo.cover} 
-                  alt="仓库封面" 
+                  alt="词库封面" 
                   draggable={false}
                 />
               ) : (

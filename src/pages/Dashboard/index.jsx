@@ -18,12 +18,12 @@ const PRESET_SEPARATORS = [
   { label: '竖线', value: '|' }
 ]
 
-// 子组件：仓库管理
+// 子组件：词库管理
 function RepositoryManager({ repositories, setRepositories }) {
   const [selectedRepo, setSelectedRepo] = useState(null)
   const [activeTab, setActiveTab] = useState('words')
 
-  // 当选中的仓库ID变化时，更新选中的仓库数据
+  // 当选中的词库ID变化时，更新选中的词库数据
   useEffect(() => {
     if (selectedRepo) {
       const updatedRepo = repositories.find(repo => repo.id === selectedRepo.id)
@@ -33,9 +33,9 @@ function RepositoryManager({ repositories, setRepositories }) {
     }
   }, [repositories, selectedRepo?.id])
 
-  // 删除仓库
+  // 删除词库
   const handleDeleteRepo = (id) => {
-    if (window.confirm('确定要删除这个仓库吗？')) {
+    if (window.confirm('确定要删除这个词库吗？')) {
       if (window.services.repository.deleteRepository(id)) {
         setRepositories(repositories.filter(repo => repo.id !== id))
         if (selectedRepo?.id === id) {
@@ -76,7 +76,7 @@ function RepositoryManager({ repositories, setRepositories }) {
               className={`tab-item ${activeTab === 'settings' ? 'active' : ''}`}
               onClick={() => setActiveTab('settings')}
             >
-              仓库设置
+              词库设置
             </div>
           </div>
 
@@ -123,7 +123,7 @@ export default function Dashboard() {
   const [activeTab, setActiveTab] = useState('picker')
   const [repositories, setRepositories] = useState([])
 
-  // 加载仓库列表
+  // 加载词库列表
   useEffect(() => {
     try {
       if (!window.services?.repository) {
@@ -150,7 +150,7 @@ export default function Dashboard() {
           className={`nav-item ${activeTab === 'repos' ? 'active' : ''}`}
           onClick={() => setActiveTab('repos')}
         >
-          仓库管理
+          词库管理
         </div>
       </nav>
 

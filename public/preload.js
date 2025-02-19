@@ -19,14 +19,14 @@ if (!fs.existsSync(DATA_DIR)) {
   fs.mkdirSync(DATA_DIR, { recursive: true })
 }
 
-// 确保仓库文件存在
+// 确保词库文件存在
 if (!fs.existsSync(REPOS_FILE)) {
   fs.writeFileSync(REPOS_FILE, '[]', 'utf8')
 }
 
-// 仓库服务
+// 词库服务
 window.services.repository = {
-  // 获取所有仓库
+  // 获取所有词库
   getAllRepositories() {
     try {
       const data = fs.readFileSync(REPOS_FILE, 'utf8')
@@ -34,12 +34,12 @@ window.services.repository = {
       // 按 order 排序，如果没有 order 属性则放到最后
       return repos.sort((a, b) => (a.order ?? Infinity) - (b.order ?? Infinity))
     } catch (error) {
-      console.error('读取仓库数据失败:', error)
+      console.error('读取词库数据失败:', error)
       return []
     }
   },
 
-  // 创建仓库
+  // 创建词库
   createRepository(name) {
     try {
       const repos = this.getAllRepositories()
@@ -61,12 +61,12 @@ window.services.repository = {
       fs.writeFileSync(REPOS_FILE, JSON.stringify(repos, null, 2), 'utf8')
       return newRepo
     } catch (error) {
-      console.error('创建仓库失败:', error)
+      console.error('创建词库失败:', error)
       return null
     }
   },
 
-  // 更新仓库
+  // 更新词库
   updateRepository(id, updates) {
     try {
       const repos = this.getAllRepositories()
@@ -80,12 +80,12 @@ window.services.repository = {
       fs.writeFileSync(REPOS_FILE, JSON.stringify(repos, null, 2), 'utf8')
       return true
     } catch (error) {
-      console.error('更新仓库失败:', error)
+      console.error('更新词库失败:', error)
       return false
     }
   },
 
-  // 删除仓库
+  // 删除词库
   deleteRepository(id) {
     try {
       const repos = this.getAllRepositories()
@@ -93,7 +93,7 @@ window.services.repository = {
       fs.writeFileSync(REPOS_FILE, JSON.stringify(filtered, null, 2), 'utf8')
       return true
     } catch (error) {
-      console.error('删除仓库失败:', error)
+      console.error('删除词库失败:', error)
       return false
     }
   },
@@ -127,10 +127,10 @@ window.services.repository = {
     }
   },
 
-  // 一次性更新所有仓库
+  // 一次性更新所有词库
   updateAllRepositories(repositories) {
     try {
-      // 保持现有仓库的其他属性不变，只更新顺序
+      // 保持现有词库的其他属性不变，只更新顺序
       const currentRepos = this.getAllRepositories()
       const updatedRepos = repositories.map(repo => {
         const currentRepo = currentRepos.find(r => r.id === repo.id)
@@ -143,7 +143,7 @@ window.services.repository = {
       fs.writeFileSync(REPOS_FILE, JSON.stringify(updatedRepos, null, 2), 'utf8')
       return true
     } catch (error) {
-      console.error('更新仓库失败:', error)
+      console.error('更新词库失败:', error)
       return false
     }
   }

@@ -43,14 +43,14 @@
   padding: 20px;
 }
 
-/* 仓库管理布局 */
+/* 词库管理布局 */
 .repository-manager {
   display: flex;
   height: 100%;
   gap: 24px;
 }
 
-/* 左侧仓库列表 */
+/* 左侧词库列表 */
 .repo-list {
   width: 300px;
   background: var(--section-bg);
@@ -75,7 +75,7 @@
   color: var(--text-color);
 }
 
-/* 新建仓库表单 */
+/* 新建词库表单 */
 .new-repo-form {
   margin-bottom: 20px;
   display: flex;
@@ -128,7 +128,7 @@
   box-shadow: 0 2px 6px rgba(24, 144, 255, 0.2);
 }
 
-/* 仓库列表项 */
+/* 词库列表项 */
 .repo-items {
   flex: 1;
   overflow-y: auto;
@@ -441,7 +441,7 @@
   margin-bottom: 0;
 }
 
-/* 仓库设置样式 */
+/* 词库设置样式 */
 .repo-settings {
   display: flex;
   flex-direction: column;
@@ -1037,7 +1037,7 @@
   flex: 1;
 }
 
-/* 新建仓库按钮 */
+/* 新建词库按钮 */
 .new-repo-btn {
   padding: 8px 16px;
   font-size: 14px;

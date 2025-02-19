@@ -111,7 +111,7 @@ export default function Settings({ repository, onUpdate }) {
       const dataUrl = canvas.toDataURL('image/jpeg', 0.9)
       console.log('Generated data URL length:', dataUrl.length)
       
-      // 更新仓库封面
+      // 更新词库封面
       const updateResult = window.services.repository.updateRepository(repository.id, {
         cover: dataUrl
       })
@@ -136,7 +136,7 @@ export default function Settings({ repository, onUpdate }) {
     }
   }
 
-  // 更新仓库设置
+  // 更新词库设置
   const handleUpdateSettings = (newSettings) => {
     // 如果切换到"取出后放回"模式，强制设置为随机取词
     if (newSettings.pickMode === 'return' && repository.settings.pickMode !== 'return') {
@@ -159,7 +159,7 @@ export default function Settings({ repository, onUpdate }) {
       
       <div className="repo-settings">
         <div className="setting-item">
-          <label>仓库封面：</label>
+          <label>词库封面：</label>
           <div className="cover-setting">
             <div className="cover-preview">
               {repository.cover ? (
