@@ -96,16 +96,21 @@ export default function WordsManager({ repository, onUpdate }) {
   return (
     <div className="words-section">
       <div className="words-header">
+        <h3>词条管理</h3>
         <div className="words-actions">
-          {selectedWords.size > 0 && (
-            <button 
-              className="delete-words-btn"
-              onClick={handleDeleteWords}
-            >
-              删除选中 ({selectedWords.size})
-            </button>
-          )}
-          <button onClick={() => setShowAddWords(true)}>添加词条</button>
+          <button 
+            className="btn btn-danger"
+            onClick={handleDeleteWords}
+            disabled={selectedWords.size === 0}
+          >
+            删除选中 ({selectedWords.size})
+          </button>
+          <button 
+            className="btn btn-primary"
+            onClick={() => setShowAddWords(true)}
+          >
+            添加词条
+          </button>
         </div>
       </div>
 
@@ -114,8 +119,7 @@ export default function WordsManager({ repository, onUpdate }) {
           <textarea
             value={newWords}
             onChange={e => setNewWords(e.target.value)}
-            placeholder="请输入词条"
-            rows={5}
+            placeholder="输入词条，多个词条可用换行、逗号、空格等分隔"
           />
           <div className="form-footer">
             <div className="separator-options">
@@ -134,11 +138,22 @@ export default function WordsManager({ repository, onUpdate }) {
               </div>
             </div>
             <div className="form-actions">
-              <button onClick={handleAddWords}>确定</button>
-              <button onClick={() => {
-                setShowAddWords(false)
-                setNewWords('')
-              }}>取消</button>
+              <button 
+                className="btn btn-primary"
+                onClick={handleAddWords}
+                disabled={!newWords.trim()}
+              >
+                添加
+              </button>
+              <button 
+                className="btn"
+                onClick={() => {
+                  setShowAddWords(false)
+                  setNewWords('')
+                }}
+              >
+                取消
+              </button>
             </div>
           </div>
         </div>

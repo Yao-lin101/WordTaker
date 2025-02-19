@@ -46,18 +46,19 @@ export default function RecycleBin({ repository, onUpdate }) {
   return (
     <div className="recycled-section">
       <div className="recycled-header">
+        <h3>回收站</h3>
         <div className="recycled-actions">
-          {selectedWords.size > 0 && (
-            <button 
-              className="restore-btn"
-              onClick={() => handleRestoreWords(Array.from(selectedWords))}
-            >
-              恢复选中 ({selectedWords.size})
-            </button>
-          )}
           <button 
-            className="clear-btn"
+            className="btn btn-primary"
+            onClick={() => handleRestoreWords(Array.from(selectedWords))}
+            disabled={selectedWords.size === 0}
+          >
+            还原选中
+          </button>
+          <button 
+            className="btn btn-danger"
             onClick={handleClearRecycled}
+            disabled={repository.recycled.length === 0}
           >
             清空回收站
           </button>

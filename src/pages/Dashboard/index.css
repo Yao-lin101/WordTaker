@@ -43,103 +43,147 @@
   padding: 20px;
 }
 
-/* 仓库管理样式 */
+/* 仓库管理布局 */
 .repository-manager {
   display: flex;
   height: 100%;
-  gap: 20px;
+  gap: 24px;
 }
 
+/* 左侧仓库列表 */
 .repo-list {
   width: 300px;
   background: var(--section-bg);
-  border-radius: 8px;
-  padding: 16px;
+  border-radius: 12px;
+  padding: 20px;
   display: flex;
   flex-direction: column;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .repo-list-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 16px;
+  margin-bottom: 20px;
 }
 
 .repo-list-header h2 {
   margin: 0;
+  font-size: 20px;
+  color: var(--text-color);
 }
 
+/* 新建仓库表单 */
 .new-repo-form {
-  margin-bottom: 16px;
+  margin-bottom: 20px;
   display: flex;
   gap: 8px;
 }
 
 .new-repo-form input {
   flex: 1;
-  padding: 8px;
+  padding: 10px 12px;
   border: 1px solid var(--border-color);
-  border-radius: 4px;
+  border-radius: 6px;
   background: var(--input-bg);
   color: var(--text-color);
+  font-size: 14px;
+  transition: all 0.2s;
 }
 
+.new-repo-form input:focus {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.1);
+}
+
+.new-repo-form button {
+  padding: 10px 16px;
+  background: var(--blue);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  transition: all 0.2s;
+}
+
+.new-repo-form button:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+/* 仓库列表项 */
 .repo-items {
   flex: 1;
   overflow-y: auto;
+  margin: 0 -8px;
+  padding: 0 8px;
 }
 
 .repo-item {
-  padding: 12px;
+  padding: 16px;
   border: 1px solid var(--border-color);
-  border-radius: 4px;
-  margin-bottom: 8px;
+  border-radius: 8px;
+  margin-bottom: 12px;
   cursor: pointer;
   position: relative;
   min-height: 64px;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  transition: all 0.2s;
 }
 
 .repo-item:hover {
   background: var(--hover-bg);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
 .repo-item.selected {
   border-color: var(--blue);
   background: var(--selected-bg);
+  box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.1);
 }
 
 .repo-name {
   display: flex;
   align-items: center;
   gap: 8px;
-  font-weight: bold;
-  margin-bottom: 4px;
+  font-weight: 500;
+  margin-bottom: 6px;
 }
 
 .repo-name input {
   width: calc(100% - 24px);
-  padding: 0;
-  border: none;
+  padding: 4px 8px;
+  border: 1px solid transparent;
+  border-radius: 4px;
   background: transparent;
   color: var(--text-color);
-  font-weight: bold;
+  font-weight: 500;
   font-size: inherit;
+  transition: all 0.2s;
+}
+
+.repo-name input:focus {
+  border-color: var(--blue);
+  background: var(--input-bg);
 }
 
 .edit-name-btn {
-  width: 20px;
-  height: 20px;
+  width: 24px;
+  height: 24px;
   padding: 0;
   font-size: 14px;
   background: transparent;
   border: none;
   color: var(--text-secondary);
   opacity: 0;
-  transition: opacity 0.2s;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .repo-name:hover .edit-name-btn {
@@ -148,36 +192,91 @@
 
 .edit-name-btn:hover {
   color: var(--blue);
+  background: var(--hover-bg);
+  border-radius: 4px;
 }
 
 .repo-stats {
-  font-size: 12px;
+  font-size: 13px;
   color: var(--text-secondary);
 }
 
 .delete-btn {
   position: absolute;
-  right: 8px;
+  right: 12px;
   top: 50%;
   transform: translateY(-50%);
-  background: #ff4d4f;
-  padding: 4px 8px;
-  font-size: 12px;
+  background: transparent;
+  padding: 6px 12px;
+  font-size: 13px;
+  color: #ff4d4f;
+  border: 1px solid #ff4d4f;
+  border-radius: 4px;
+  opacity: 0;
+  transition: all 0.2s;
 }
 
+.repo-item:hover .delete-btn {
+  opacity: 1;
+}
+
+.delete-btn:hover {
+  background: #ff4d4f;
+  color: #fff;
+}
+
+/* 右侧详情区域 */
 .repo-detail {
   flex: 1;
   display: flex;
   flex-direction: column;
   background: var(--section-bg);
-  border-radius: 8px;
+  border-radius: 12px;
   overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .repo-detail h2 {
   margin: 0;
-  padding: 16px 20px;
+  padding: 20px 24px;
+  font-size: 20px;
   border-bottom: 1px solid var(--border-color);
+}
+
+/* 标签页导航 */
+.detail-tabs {
+  display: flex;
+  padding: 0 24px;
+  border-bottom: 1px solid var(--border-color);
+  background: var(--hover-bg);
+}
+
+.tab-item {
+  padding: 14px 24px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  position: relative;
+  font-size: 14px;
+  transition: all 0.2s;
+}
+
+.tab-item:hover {
+  color: var(--text-color);
+}
+
+.tab-item.active {
+  color: var(--blue);
+  font-weight: 500;
+}
+
+.tab-item.active::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--blue);
 }
 
 /* 词条管理样式 */
@@ -192,18 +291,26 @@
   border-radius: 8px;
 }
 
-.words-header {
-  padding: 16px 20px;
+.words-header,
+.recycled-header {
+  padding: 12px 20px;
   border-bottom: 1px solid var(--border-color);
-}
-
-.words-header h3 {
-  margin: 0;
-}
-
-.words-actions {
   display: flex;
-  gap: 8px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.words-header h3,
+.recycled-header h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.words-actions,
+.recycled-actions {
+  display: flex;
+  gap: 12px;
 }
 
 .delete-words-btn {
@@ -211,26 +318,42 @@
 }
 
 .add-words-form {
-  padding: 20px;
+  padding: 16px 20px;
   border-bottom: 1px solid var(--border-color);
+  display: flex;
+  gap: 12px;
 }
 
 .add-words-form textarea {
-  width: 100%;
+  flex: 1;
   padding: 12px;
   border: 1px solid var(--border-color);
   border-radius: 4px;
   background: var(--section-bg);
   color: var(--text-color);
   resize: vertical;
-  margin-bottom: 16px;
+  min-height: 38px;
+  max-height: 200px;
+  font-size: 14px;
+  transition: all 0.2s;
+}
+
+.add-words-form textarea:focus {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.1);
+}
+
+.add-words-form button {
+  align-self: flex-start;
 }
 
 .form-footer {
-  margin-top: 12px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border-color);
 }
 
 .separator-input {
@@ -496,38 +619,6 @@
   margin: 0;
 }
 
-/* 添加页签样式 */
-.detail-tabs {
-  display: flex;
-  padding: 0 20px;
-  border-bottom: 1px solid var(--border-color);
-}
-
-.tab-item {
-  padding: 12px 24px;
-  cursor: pointer;
-  color: var(--text-secondary);
-  position: relative;
-}
-
-.tab-item:hover {
-  color: var(--text-color);
-}
-
-.tab-item.active {
-  color: var(--text-color);
-}
-
-.tab-item.active::after {
-  content: '';
-  position: absolute;
-  bottom: -1px;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: var(--blue);
-}
-
 /* 回收站样式 */
 .recycled-section {
   flex: 1;
@@ -766,9 +857,48 @@
   background: var(--hover-bg);
 }
 
-/* 操作按钮区域 */
-.words-actions,
-.recycled-actions {
-  display: flex;
-  gap: 12px;
+/* 通用按钮样式 */
+.btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--hover-bg);
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+}
+
+.btn:hover:not(:disabled) {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* 主要按钮 */
+.btn-primary {
+  background: var(--blue);
+  color: #fff;
+  border: none;
+}
+
+/* 危险按钮 */
+.btn-danger {
+  background: transparent;
+  border: 1px solid #ff4d4f;
+  color: #ff4d4f;
+}
+
+.btn-danger:not(:disabled):hover {
+  background: #ff4d4f;
+  color: #fff;
 } 
