@@ -49,7 +49,7 @@ export default function WordPicker({ repositories, onUpdate }) {
           <div key={repo.id} className="repo-card">
             <div className="repo-cover">
               {repo.cover ? (
-                <img src={repo.cover} alt={repo.name} />
+                <img src={repo.cover} alt="仓库封面" />
               ) : (
                 <div className="cover-placeholder">
                   {repo.name[0]?.toUpperCase()}
@@ -58,7 +58,7 @@ export default function WordPicker({ repositories, onUpdate }) {
             </div>
             <div className="repo-info">
               <span className="repo-name">{repo.name}</span>
-              <button 
+              <button
                 className="pick-btn"
                 onClick={() => handlePickWord(repo)}
                 disabled={!repo.words.length}

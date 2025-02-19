@@ -331,6 +331,8 @@
 
 /* 取词页面样式 */
 .word-picker {
+  height: 100%;
+  overflow-y: auto;
   padding: 20px;
 }
 

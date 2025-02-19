@@ -26,43 +26,114 @@ export default function Settings({ repository, onUpdate }) {
     }
   }
 
+  // 在图片加载时同时设置 crop 和 completedCrop
+  const handleImageLoad = (e) => {
+    const { width, height } = e.currentTarget
+    const size = Math.min(width, height, 400)
+    const x = (width - size) / 2
+    const y = (height - size) / 2
+    const newCrop = {
+      unit: 'px',
+      width: size,
+      height: size,
+      x,
+      y
+    }
+    setCrop(newCrop)
+    setCompletedCrop(newCrop)  // 同时设置 completedCrop
+  }
+
   // 保存裁剪后的图片
   const handleSaveCover = () => {
-    if (!completedCrop || !imgRef.current) return
+    if (!completedCrop || !imgRef.current) {
+      console.log('No crop or image ref:', { completedCrop, imgRef: imgRef.current })
+      return
+    }
 
     const canvas = document.createElement('canvas')
     const image = imgRef.current
     const scaleX = image.naturalWidth / image.width
     const scaleY = image.naturalHeight / image.height
 
+    console.log('Image dimensions:', {
+      naturalWidth: image.naturalWidth,
+      naturalHeight: image.naturalHeight,
+      width: image.width,
+      height: image.height,
+      scaleX,
+      scaleY
+    })
+
+    // 固定输出尺寸为 500x500
     canvas.width = 500
     canvas.height = 500
 
     const ctx = canvas.getContext('2d')
+    if (!ctx) {
+      console.log('Failed to get canvas context')
+      return
+    }
 
-    ctx.drawImage(
-      image,
-      completedCrop.x * scaleX,
-      completedCrop.y * scaleY,
-      completedCrop.width * scaleX,
-      completedCrop.height * scaleY,
-      0,
-      0,
-      500,
-      500
-    )
+    // 确保画布背景为白色
+    ctx.fillStyle = '#FFFFFF'
+    ctx.fillRect(0, 0, canvas.width, canvas.height)
 
-    const dataUrl = canvas.toDataURL()
-    if (window.services.repository.updateRepository(repository.id, {
-      cover: dataUrl
-    })) {
-      onUpdate({
-        ...repository,
+    // 计算实际裁剪区域的尺寸
+    const cropWidth = completedCrop.width * scaleX
+    const cropHeight = completedCrop.height * scaleY
+    const cropX = completedCrop.x * scaleX
+    const cropY = completedCrop.y * scaleY
+
+    console.log('Crop dimensions:', {
+      original: completedCrop,
+      scaled: {
+        width: cropWidth,
+        height: cropHeight,
+        x: cropX,
+        y: cropY
+      }
+    })
+
+    try {
+      // 使用 drawImage 将裁剪区域缩放到 500x500
+      ctx.drawImage(
+        image,
+        cropX,
+        cropY,
+        cropWidth,
+        cropHeight,
+        0,
+        0,
+        500,
+        500
+      )
+
+      const dataUrl = canvas.toDataURL('image/jpeg', 0.9)
+      console.log('Generated data URL length:', dataUrl.length)
+      
+      // 更新仓库封面
+      const updateResult = window.services.repository.updateRepository(repository.id, {
         cover: dataUrl
       })
+      console.log('Update result:', updateResult)
+
+      if (updateResult) {
+        onUpdate({
+          ...repository,
+          cover: dataUrl
+        })
+        
+        // 关闭裁剪弹窗并清理状态
+        setShowCropModal(false)
+        setCropImage(null)
+        setCompletedCrop(null)
+      } else {
+        console.log('Failed to update repository')
+      }
+    } catch (error) {
+      console.error('Failed to save cover:', error)
+      // 可以在这里添加错误提示
     }
-    setShowCropModal(false)
-    setCropImage(null)
   }
 
   // 更新仓库设置
@@ -92,22 +163,21 @@ export default function Settings({ repository, onUpdate }) {
           <div className="cover-setting">
             <div className="cover-preview">
               {repository.cover ? (
-                <img src={repository.cover} alt="仓库封面" />
+                <img src={repository.cover} alt={repository.name} />
               ) : (
                 <div className="cover-placeholder">
-                  暂无封面
+                  {repository.name[0]?.toUpperCase()}
                 </div>
               )}
             </div>
-            <input
-              type="file"
-              accept="image/*"
-              onChange={handleImageUpload}
-              style={{ display: 'none' }}
-              id="cover-upload"
-            />
-            <label htmlFor="cover-upload" className="upload-btn">
+            <label className="upload-btn">
               更换封面
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleImageUpload}
+                style={{ display: 'none' }}
+              />
             </label>
           </div>
         </div>
@@ -180,6 +250,7 @@ export default function Settings({ repository, onUpdate }) {
                 onClick={() => {
                   setShowCropModal(false)
                   setCropImage(null)
+                  setCompletedCrop(null)
                 }}
               >
                 ✕
@@ -197,19 +268,7 @@ export default function Settings({ repository, onUpdate }) {
                   ref={imgRef}
                   src={cropImage}
                   style={{ maxHeight: '70vh' }}
-                  onLoad={(e) => {
-                    const { width, height } = e.currentTarget
-                    const size = Math.min(width, height, 400)
-                    const x = (width - size) / 2
-                    const y = (height - size) / 2
-                    setCrop({
-                      unit: 'px',
-                      width: size,
-                      height: size,
-                      x,
-                      y
-                    })
-                  }}
+                  onLoad={handleImageLoad}
                 />
               </ReactCrop>
             </div>
@@ -218,6 +277,7 @@ export default function Settings({ repository, onUpdate }) {
               <button onClick={() => {
                 setShowCropModal(false)
                 setCropImage(null)
+                setCompletedCrop(null)
               }}>取消</button>
             </div>
           </div>
