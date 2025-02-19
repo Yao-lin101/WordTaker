@@ -66,11 +66,19 @@ export default function Settings({ repository, onUpdate }) {
   }
 
   // 更新仓库设置
-  const handleUpdateSettings = (settings) => {
-    if (window.services.repository.updateRepository(repository.id, { settings })) {
+  const handleUpdateSettings = (newSettings) => {
+    // 如果切换到"取出后放回"模式，强制设置为随机取词
+    if (newSettings.pickMode === 'return' && repository.settings.pickMode !== 'return') {
+      newSettings = {
+        ...newSettings,
+        pickOrder: 'random'
+      }
+    }
+
+    if (window.services.repository.updateRepository(repository.id, { settings: newSettings })) {
       onUpdate({
         ...repository,
-        settings
+        settings: newSettings
       })
     }
   }
@@ -107,14 +115,14 @@ export default function Settings({ repository, onUpdate }) {
         <div className="setting-item">
           <label>取词模式：</label>
           <select 
-            value={repository.settings.pickMode}
+            value={repository.settings.pickMode || 'recycle'}
             onChange={e => handleUpdateSettings({
               ...repository.settings,
               pickMode: e.target.value
             })}
           >
-            <option value="return">取出后放回</option>
             <option value="recycle">取出后移到回收站</option>
+            <option value="return">取出后放回</option>
           </select>
         </div>
 
@@ -126,6 +134,7 @@ export default function Settings({ repository, onUpdate }) {
               ...repository.settings,
               pickOrder: e.target.value
             })}
+            disabled={repository.settings.pickMode === 'return'}
           >
             <option value="random">随机取词</option>
             <option value="sequence">顺序取词</option>
@@ -133,15 +142,31 @@ export default function Settings({ repository, onUpdate }) {
         </div>
 
         <div className="setting-item">
-          <label>回收站过期天数：</label>
-          <input
-            type="number"
-            value={repository.settings.recycleExpireDays}
-            onChange={e => handleUpdateSettings({
-              ...repository.settings,
-              recycleExpireDays: parseInt(e.target.value) || 7
-            })}
-          />
+          <label>回收站过期设置：</label>
+          <div className="expire-settings">
+            <input
+              type="number"
+              value={repository.settings.recycleExpireDays}
+              onChange={e => handleUpdateSettings({
+                ...repository.settings,
+                recycleExpireDays: parseInt(e.target.value) || 7,
+                neverExpire: false
+              })}
+              disabled={repository.settings.neverExpire}
+              min="1"
+            />
+            <label className="never-expire">
+              <input
+                type="checkbox"
+                checked={repository.settings.neverExpire}
+                onChange={e => handleUpdateSettings({
+                  ...repository.settings,
+                  neverExpire: e.target.checked
+                })}
+              />
+              永不过期
+            </label>
+          </div>
         </div>
       </div>
 

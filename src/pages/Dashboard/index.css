@@ -745,4 +745,32 @@
 
 .ReactCrop__drag-handle::after {
   background-color: var(--blue);
+}
+
+/* 设置表单样式补充 */
+.expire-settings {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.never-expire {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--text-color);
+  cursor: pointer;
+}
+
+.never-expire input[type="checkbox"] {
+  width: auto;
+  cursor: pointer;
+}
+
+/* 禁用状态的输入框样式 */
+.setting-item select:disabled,
+.setting-item input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background: var(--hover-bg);
 } 

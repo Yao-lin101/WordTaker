@@ -44,7 +44,6 @@ export default function WordPicker({ repositories, onUpdate }) {
 
   return (
     <div className="word-picker">
-      <h2>快速取词</h2>
       <div className="repo-grid">
         {repositories.map(repo => (
           <div key={repo.id} className="repo-card">
