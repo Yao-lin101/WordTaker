@@ -38,8 +38,25 @@ export default function WordPicker({ repositories, onUpdate }) {
     newRepos.splice(sourceIndex, 1)
     newRepos.splice(targetIndex, 0, draggedRepo)
 
-    // 更新父组件状态
-    onUpdate(newRepos)
+    // 为每个仓库更新 order 属性
+    const updatedRepos = newRepos.map((repo, index) => ({
+      ...repo,
+      order: index
+    }))
+
+    // 逐个更新仓库的顺序
+    let success = true
+    for (const repo of updatedRepos) {
+      if (!window.services.repository.updateRepository(repo.id, { order: repo.order })) {
+        success = false
+        break
+      }
+    }
+
+    // 如果全部更新成功，更新 UI
+    if (success) {
+      onUpdate(updatedRepos)
+    }
   }
 
   // 取词功能实现

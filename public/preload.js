@@ -30,7 +30,9 @@ window.services.repository = {
   getAllRepositories() {
     try {
       const data = fs.readFileSync(REPOS_FILE, 'utf8')
-      return JSON.parse(data)
+      const repos = JSON.parse(data)
+      // 按 order 排序，如果没有 order 属性则放到最后
+      return repos.sort((a, b) => (a.order ?? Infinity) - (b.order ?? Infinity))
     } catch (error) {
       console.error('读取仓库数据失败:', error)
       return []
@@ -47,6 +49,7 @@ window.services.repository = {
         cover: null,
         words: [],
         recycled: [],
+        order: repos.length, // 添加 order 属性
         settings: {
           pickMode: 'recycle',  // 默认取出后移到回收站
           pickOrder: 'random',  // 默认随机取词
@@ -121,6 +124,27 @@ window.services.repository = {
       }
     } catch (error) {
       console.error('清理过期词条失败:', error)
+    }
+  },
+
+  // 一次性更新所有仓库
+  updateAllRepositories(repositories) {
+    try {
+      // 保持现有仓库的其他属性不变，只更新顺序
+      const currentRepos = this.getAllRepositories()
+      const updatedRepos = repositories.map(repo => {
+        const currentRepo = currentRepos.find(r => r.id === repo.id)
+        return {
+          ...currentRepo,
+          order: repo.order
+        }
+      })
+      
+      fs.writeFileSync(REPOS_FILE, JSON.stringify(updatedRepos, null, 2), 'utf8')
+      return true
+    } catch (error) {
+      console.error('更新仓库失败:', error)
+      return false
     }
   }
 }

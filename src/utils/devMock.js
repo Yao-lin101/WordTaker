@@ -30,7 +30,9 @@ if (process.env.NODE_ENV === 'development' && !window.utools) {
       getAllRepositories: () => {
         try {
           const data = localStorage.getItem('repositories')
-          return data ? JSON.parse(data) : []
+          const repos = data ? JSON.parse(data) : []
+          // 添加排序逻辑
+          return repos.sort((a, b) => (a.order ?? Infinity) - (b.order ?? Infinity))
         } catch {
           return []
         }
@@ -49,6 +51,7 @@ if (process.env.NODE_ENV === 'development' && !window.utools) {
         const newRepo = {
           id: Date.now().toString(36),
           name,
+          order: repositories.length, // 添加 order 属性
           settings: {
             pickMode: 'return',
             pickOrder: 'random',
@@ -63,12 +66,21 @@ if (process.env.NODE_ENV === 'development' && !window.utools) {
         window.services.repository.saveRepositories(repositories)
         return newRepo
       },
-      updateRepository: (id, data) => {
-        const repositories = window.services.repository.getAllRepositories()
-        const index = repositories.findIndex(repo => repo.id === id)
-        if (index === -1) return false
-        repositories[index] = { ...repositories[index], ...data }
-        return window.services.repository.saveRepositories(repositories)
+      updateRepository: (id, updates) => {
+        try {
+          const repositories = window.services.repository.getAllRepositories()
+          const index = repositories.findIndex(repo => repo.id === id)
+          if (index === -1) return false
+
+          repositories[index] = {
+            ...repositories[index],
+            ...updates
+          }
+          localStorage.setItem('repositories', JSON.stringify(repositories))
+          return true
+        } catch {
+          return false
+        }
       },
       deleteRepository: (id) => {
         const repositories = window.services.repository.getAllRepositories()
