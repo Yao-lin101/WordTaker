@@ -1,0 +1,35 @@
+{
+  "main": "index.html",
+  "preload": ["preload/services.js", "preload/repository.js"],
+  "logo": "logo.png",
+  "development": {
+    "main": "http://localhost:5173"
+  },
+  "features": [
+    {
+      "code": "word-picker",
+      "explain": "打开取词器主界面",
+      "cmds": ["取词器", "word picker"]
+    },
+    {
+      "code": "quick-pick",
+      "explain": "快速取词",
+      "cmds": [
+        {
+          "type": "over",
+          "label": "快速取词"
+        }
+      ]
+    },
+    {
+      "code": "add-words",
+      "explain": "添加词条",
+      "cmds": [
+        {
+          "type": "over",
+          "label": "添加到取词器"
+        }
+      ]
+    }
+  ]
+}
