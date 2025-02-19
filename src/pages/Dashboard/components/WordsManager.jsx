@@ -115,29 +115,44 @@ export default function WordsManager({ repository, onUpdate }) {
       </div>
 
       {showAddWords && (
-        <div className="add-words-form">
-          <textarea
-            value={newWords}
-            onChange={e => setNewWords(e.target.value)}
-            placeholder="输入词条，多个词条可用换行、逗号、空格等分隔"
-          />
-          <div className="form-footer">
-            <div className="separator-options">
-              <label>分隔符：</label>
-              <div className="separator-list">
-                {PRESET_SEPARATORS.map(({ label, value }) => (
-                  <label key={value} className="separator-item">
-                    <input
-                      type="checkbox"
-                      checked={selectedSeparators.has(value)}
-                      onChange={() => toggleSeparator(value)}
-                    />
-                    {label}
-                  </label>
-                ))}
+        <div className="modal-overlay">
+          <div className="add-words-modal">
+            <div className="modal-header">
+              <h3>添加词条</h3>
+              <button 
+                className="close-btn"
+                onClick={() => {
+                  setShowAddWords(false)
+                  setNewWords('')
+                }}
+              >
+                ✕
+              </button>
+            </div>
+            <div className="modal-content">
+              <textarea
+                value={newWords}
+                onChange={e => setNewWords(e.target.value)}
+                placeholder="输入词条，多个词条可用换行、逗号、空格等分隔"
+                autoFocus
+              />
+              <div className="separator-options">
+                <label>分隔符：</label>
+                <div className="separator-list">
+                  {PRESET_SEPARATORS.map(({ label, value }) => (
+                    <label key={value} className="separator-item">
+                      <input
+                        type="checkbox"
+                        checked={selectedSeparators.has(value)}
+                        onChange={() => toggleSeparator(value)}
+                      />
+                      {label}
+                    </label>
+                  ))}
+                </div>
               </div>
             </div>
-            <div className="form-actions">
+            <div className="modal-footer">
               <button 
                 className="btn btn-primary"
                 onClick={handleAddWords}

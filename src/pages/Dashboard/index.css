@@ -901,4 +901,85 @@
 .btn-danger:not(:disabled):hover {
   background: #ff4d4f;
   color: #fff;
+}
+
+/* 添加词条弹窗样式 */
+.add-words-modal {
+  background: var(--section-bg);
+  border-radius: 8px;
+  width: 600px;
+  max-width: 90vw;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+  max-height: 90vh;
+}
+
+.add-words-modal .modal-header {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.add-words-modal .modal-content {
+  padding: 20px;
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  min-width: 0;
+}
+
+.add-words-modal textarea {
+  width: 100%;
+  min-height: 120px;
+  max-height: none;
+  padding: 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  background: var(--section-bg);
+  color: var(--text-color);
+  resize: vertical;
+  font-size: 14px;
+  transition: all 0.2s;
+  flex: 1;
+  margin-bottom: 16px;
+  box-sizing: border-box;
+  overflow-x: hidden;
+  word-wrap: break-word;
+}
+
+.add-words-modal .separator-options {
+  flex-shrink: 0;
+  padding-top: 16px;
+  border-top: 1px solid var(--border-color);
+}
+
+.add-words-modal .separator-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 8px;
+}
+
+.add-words-modal .separator-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+}
+
+.add-words-modal .modal-footer {
+  padding: 16px 20px;
+  border-top: 1px solid var(--border-color);
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  flex-shrink: 0;
 } 
