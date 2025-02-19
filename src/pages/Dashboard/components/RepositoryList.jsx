@@ -47,7 +47,13 @@ export default function RepositoryList({
     <div className="repo-list">
       <div className="repo-list-header">
         <h2>仓库列表</h2>
-        <button onClick={() => setShowNewRepo(true)}>新建仓库</button>
+        <button 
+          className="btn btn-primary new-repo-btn"
+          onClick={() => setShowNewRepo(true)}
+        >
+          <span>+</span>
+          新建仓库
+        </button>
       </div>
 
       {showNewRepo && (
@@ -57,9 +63,24 @@ export default function RepositoryList({
             value={newRepoName}
             onChange={e => setNewRepoName(e.target.value)}
             placeholder="输入仓库名称"
+            autoFocus
           />
-          <button onClick={handleCreateRepo}>确定</button>
-          <button onClick={() => setShowNewRepo(false)}>取消</button>
+          <button 
+            className="btn-confirm"
+            onClick={handleCreateRepo}
+            disabled={!newRepoName.trim()}
+          >
+            确定
+          </button>
+          <button 
+            className="btn-cancel"
+            onClick={() => {
+              setShowNewRepo(false)
+              setNewRepoName('')
+            }}
+          >
+            取消
+          </button>
         </div>
       )}
 

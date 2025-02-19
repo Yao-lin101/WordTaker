@@ -70,7 +70,8 @@
 
 .repo-list-header h2 {
   margin: 0;
-  font-size: 20px;
+  font-size: 18px;
+  font-weight: 500;
   color: var(--text-color);
 }
 
@@ -97,19 +98,34 @@
   box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.1);
 }
 
-.new-repo-form button {
-  padding: 10px 16px;
+.new-repo-form .btn-confirm {
   background: var(--blue);
   color: #fff;
   border: none;
-  border-radius: 6px;
+  padding: 8px 16px;
+  border-radius: 4px;
   font-size: 14px;
   transition: all 0.2s;
 }
 
-.new-repo-form button:hover {
+.new-repo-form .btn-cancel {
+  background: transparent;
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-size: 14px;
+  transition: all 0.2s;
+}
+
+.new-repo-form .btn-confirm:hover,
+.new-repo-form .btn-cancel:hover {
   opacity: 0.9;
   transform: translateY(-1px);
+}
+
+.new-repo-form .btn-confirm:hover {
+  box-shadow: 0 2px 6px rgba(24, 144, 255, 0.2);
 }
 
 /* 仓库列表项 */
@@ -1019,4 +1035,30 @@
 .setting-row .setting-item {
   margin-bottom: 0;
   flex: 1;
+}
+
+/* 新建仓库按钮 */
+.new-repo-btn {
+  padding: 8px 16px;
+  font-size: 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--blue);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  transition: all 0.2s;
+}
+
+.new-repo-btn span {
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1;
+}
+
+.new-repo-btn:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(24, 144, 255, 0.2);
 } 
