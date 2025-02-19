@@ -182,49 +182,54 @@ export default function Settings({ repository, onUpdate }) {
           </div>
         </div>
 
-        <div className="setting-item">
-          <label>取词模式：</label>
-          <select 
-            value={repository.settings.pickMode || 'recycle'}
-            onChange={e => handleUpdateSettings({
-              ...repository.settings,
-              pickMode: e.target.value
-            })}
-          >
-            <option value="recycle">取出后移到回收站</option>
-            <option value="return">取出后放回</option>
-          </select>
-        </div>
+        <div className="setting-row">
+          <div className="setting-item">
+            <label>取词模式：</label>
+            <select
+              value={repository.settings.pickMode}
+              onChange={e => handleUpdateSettings({
+                ...repository.settings,
+                pickMode: e.target.value
+              })}
+            >
+              <option value="recycle">取出后移到回收站</option>
+              <option value="return">取出后放回</option>
+            </select>
+          </div>
 
-        <div className="setting-item">
-          <label>取词顺序：</label>
-          <select
-            value={repository.settings.pickOrder}
-            onChange={e => handleUpdateSettings({
-              ...repository.settings,
-              pickOrder: e.target.value
-            })}
-            disabled={repository.settings.pickMode === 'return'}
-          >
-            <option value="random">随机取词</option>
-            <option value="sequence">顺序取词</option>
-          </select>
+          <div className="setting-item">
+            <label>取词顺序：</label>
+            <select
+              value={repository.settings.pickOrder}
+              onChange={e => handleUpdateSettings({
+                ...repository.settings,
+                pickOrder: e.target.value
+              })}
+              disabled={repository.settings.pickMode === 'return'}
+            >
+              <option value="random">随机取词</option>
+              <option value="sequence">顺序取词</option>
+            </select>
+          </div>
         </div>
 
         <div className="setting-item">
           <label>回收站过期设置：</label>
           <div className="expire-settings">
-            <input
-              type="number"
-              value={repository.settings.recycleExpireDays}
-              onChange={e => handleUpdateSettings({
-                ...repository.settings,
-                recycleExpireDays: parseInt(e.target.value) || 7,
-                neverExpire: false
-              })}
-              disabled={repository.settings.neverExpire}
-              min="1"
-            />
+            <div className="expire-days">
+              <input
+                type="number"
+                value={repository.settings.recycleExpireDays}
+                onChange={e => handleUpdateSettings({
+                  ...repository.settings,
+                  recycleExpireDays: parseInt(e.target.value) || 7,
+                  neverExpire: false
+                })}
+                disabled={repository.settings.neverExpire}
+                min="1"
+              />
+              <span>天</span>
+            </div>
             <label className="never-expire">
               <input
                 type="checkbox"
