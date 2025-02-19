@@ -1,14 +1,18 @@
 {
   "main": "index.html",
-  "preload": ["preload/services.js", "preload/repository.js"],
   "logo": "logo.png",
+  "preload": "preload.js",
+  "platform": ["win32", "darwin", "linux"],
   "development": {
     "main": "http://localhost:5173"
+  },
+  "pluginSetting": {
+    "single": true
   },
   "features": [
     {
       "code": "word-picker",
-      "explain": "打开取词器主界面",
+      "explain": "取词器",
       "cmds": ["取词器", "word picker"]
     },
     {

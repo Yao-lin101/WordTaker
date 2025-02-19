@@ -125,8 +125,16 @@ export default function Dashboard() {
 
   // 加载仓库列表
   useEffect(() => {
-    const repos = window.services.repository.getAllRepositories()
-    setRepositories(repos)
+    try {
+      if (!window.services?.repository) {
+        console.error('Repository service not available')
+        return
+      }
+      const repos = window.services.repository.getAllRepositories()
+      setRepositories(repos)
+    } catch (error) {
+      console.error('Failed to load repositories:', error)
+    }
   }, [])
 
   return (

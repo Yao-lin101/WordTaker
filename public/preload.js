@@ -1,3 +1,6 @@
+// 初始化服务对象
+window.services = {}
+
 const fs = require('fs')
 const path = require('path')
 const crypto = require('node:crypto')
@@ -39,7 +42,7 @@ window.services.repository = {
     try {
       const repos = this.getAllRepositories()
       const newRepo = {
-        id: Date.now().toString(),
+        id: generateId(),
         name,
         cover: null,
         words: [],
@@ -125,4 +128,7 @@ window.services.repository = {
 // 定期清理过期的回收站词条
 setInterval(() => {
   window.services.repository.cleanExpiredRecycled()
-}, 60 * 60 * 1000) // 每小时检查一次 
+}, 60 * 60 * 1000) // 每小时检查一次
+
+// 调试输出
+console.log('preload.js loaded, services:', window.services) 
