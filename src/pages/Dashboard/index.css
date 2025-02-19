@@ -348,10 +348,17 @@
   border-radius: 8px;
   overflow: hidden;
   transition: transform 0.2s;
+  cursor: move;
+  user-select: none;
 }
 
 .repo-card:hover {
   transform: translateY(-2px);
+}
+
+.repo-card.dragging {
+  opacity: 0.5;
+  transform: scale(0.95);
 }
 
 .repo-cover {

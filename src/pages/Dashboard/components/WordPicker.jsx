@@ -2,6 +2,46 @@ import { useState } from 'react'
 import { toast } from '../../../components/Toast'
 
 export default function WordPicker({ repositories, onUpdate }) {
+  const [draggedRepo, setDraggedRepo] = useState(null)
+
+  // 开始拖动
+  const handleDragStart = (e, repo) => {
+    // 不要阻止默认拖动行为
+    // e.preventDefault()  // 删除这行
+    // e.stopPropagation() // 删除这行
+    
+    // 设置拖动数据
+    e.dataTransfer.effectAllowed = 'move'
+    setDraggedRepo(repo)
+  }
+
+  // 拖动结束
+  const handleDragEnd = () => {
+    setDraggedRepo(null)
+  }
+
+  // 拖动进入目标区域
+  const handleDragOver = (e) => {
+    e.preventDefault()
+  }
+
+  // 放置到目标位置
+  const handleDrop = (targetRepo) => {
+    if (!draggedRepo || draggedRepo.id === targetRepo.id) return
+
+    // 获取源和目标的索引
+    const sourceIndex = repositories.findIndex(r => r.id === draggedRepo.id)
+    const targetIndex = repositories.findIndex(r => r.id === targetRepo.id)
+
+    // 重新排序
+    const newRepos = [...repositories]
+    newRepos.splice(sourceIndex, 1)
+    newRepos.splice(targetIndex, 0, draggedRepo)
+
+    // 更新父组件状态
+    onUpdate(newRepos)
+  }
+
   // 取词功能实现
   const handlePickWord = (repo) => {
     if (!repo.words.length) return
@@ -46,10 +86,22 @@ export default function WordPicker({ repositories, onUpdate }) {
     <div className="word-picker">
       <div className="repo-grid">
         {repositories.map(repo => (
-          <div key={repo.id} className="repo-card">
+          <div 
+            key={repo.id} 
+            className={`repo-card ${draggedRepo?.id === repo.id ? 'dragging' : ''}`}
+            draggable="true"
+            onDragStart={(e) => handleDragStart(e, repo)}
+            onDragEnd={handleDragEnd}
+            onDragOver={handleDragOver}
+            onDrop={() => handleDrop(repo)}
+          >
             <div className="repo-cover">
               {repo.cover ? (
-                <img src={repo.cover} alt="仓库封面" />
+                <img 
+                  src={repo.cover} 
+                  alt="仓库封面" 
+                  draggable={false}
+                />
               ) : (
                 <div className="cover-placeholder">
                   {repo.name[0]?.toUpperCase()}
@@ -62,6 +114,7 @@ export default function WordPicker({ repositories, onUpdate }) {
                 className="pick-btn"
                 onClick={() => handlePickWord(repo)}
                 disabled={!repo.words.length}
+                draggable={false}
               >
                 取词 ({repo.words.length})
               </button>
