@@ -24,16 +24,6 @@
           "label": "快速取词（输入词库名称或序号）"
         }
       ]
-    },
-    {
-      "code": "add-words",
-      "explain": "添加词条",
-      "cmds": [
-        {
-          "type": "over",
-          "label": "添加到取词器"
-        }
-      ]
     }
   ]
 }
