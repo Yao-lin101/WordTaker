@@ -17,11 +17,11 @@
     },
     {
       "code": "quick-pick",
-      "explain": "快速取词",
+      "explain": "从指定词库快速取词",
       "cmds": [
         {
-          "type": "over",
-          "label": "快速取词"
+          "type": "text",
+          "label": "快速取词（输入词库名称或序号）"
         }
       ]
     },
