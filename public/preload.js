@@ -146,6 +146,81 @@ window.services.repository = {
       console.error('更新词库失败:', error)
       return false
     }
+  },
+
+  // 快速取词功能
+  quickPick(searchText) {
+    try {
+      // 获取所有词库
+      const repos = this.getAllRepositories()
+      if (repos.length === 0) {
+        return { success: false, message: '没有可用的词库' }
+      }
+
+      let targetRepo = null
+
+      // 尝试将文本解析为数字
+      const index = parseInt(searchText) - 1
+      if (!isNaN(index)) {
+        // 按序号选择词库
+        if (index >= 0 && index < repos.length) {
+          targetRepo = repos[index]
+        } else {
+          return { success: false, message: `词库序号 ${index + 1} 不存在` }
+        }
+      } else {
+        // 模糊匹配词库名称
+        const matchedRepos = repos.filter(repo => 
+          repo.name.toLowerCase().includes(searchText.toLowerCase())
+        )
+        
+        if (matchedRepos.length === 0) {
+          return { success: false, message: `未找到匹配的词库："${searchText}"` }
+        }
+        
+        if (matchedRepos.length > 1) {
+          const repoNames = matchedRepos.map((repo, idx) => `${idx + 1}.${repo.name}`).join('\n')
+          return { success: false, message: `找到多个匹配的词库:\n${repoNames}\n请输入更精确的名称` }
+        }
+
+        targetRepo = matchedRepos[0]
+      }
+
+      // 检查词库是否有可用词条
+      if (!targetRepo.words.length) {
+        return { success: false, message: `词库"${targetRepo.name}"中没有可用的词条` }
+      }
+
+      // 从词库中随机选择一个词条
+      const word = targetRepo.words[Math.floor(Math.random() * targetRepo.words.length)]
+
+      // 如果设置为取出后移到回收站
+      if (targetRepo.settings.pickMode === 'recycle') {
+        const now = Date.now()
+        const updatedRepo = {
+          ...targetRepo,
+          words: targetRepo.words.filter(w => w !== word),
+          recycled: [
+            ...targetRepo.recycled,
+            { word, recycleDate: now }
+          ]
+        }
+
+        this.updateRepository(targetRepo.id, {
+          words: updatedRepo.words,
+          recycled: updatedRepo.recycled
+        })
+      }
+
+      return { 
+        success: true, 
+        word,
+        message: `已从"${targetRepo.name}"复制：${word}`
+      }
+    } catch (error) {
+      console.error('快速取词失败:', error)
+      return { success: false, message: '快速取词失败' }
+    }
   }
 }
 
@@ -153,6 +228,29 @@ window.services.repository = {
 setInterval(() => {
   window.services.repository.cleanExpiredRecycled()
 }, 60 * 60 * 1000) // 每小时检查一次
+
+// 添加快速取词的处理函数
+window.utools.onPluginEnter(({code, type, payload}) => {
+  if (code === 'quick-pick') {
+    const result = window.services.repository.quickPick(payload)
+    
+    if (result.success) {
+      // 复制到剪贴板
+      const textarea = document.createElement('textarea')
+      textarea.value = result.word
+      document.body.appendChild(textarea)
+      textarea.select()
+      document.execCommand('copy')
+      document.body.removeChild(textarea)
+    }
+
+    // 显示结果消息
+    window.utools.showNotification(result.message)
+    
+    // 退出插件
+    window.utools.outPlugin()
+  }
+})
 
 // 调试输出
 console.log('preload.js loaded, services:', window.services) 
